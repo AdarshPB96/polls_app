@@ -16,7 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> screens = [
     const AddPollScreen(),
-    const AllPollScreen(),
+     const AllPollScreen(),
   ];
 
   @override

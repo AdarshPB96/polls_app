@@ -79,15 +79,24 @@ class MainProvider with ChangeNotifier {
     }
   }
 
-  // 2. Fetch Polls from API
-  Future<List<Poll>> fetchPolls() async {
-    final response = await http.get(
-      Uri.parse(ApiConstants.api),
-    );
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body)['data'];
-      return data.map((json) => Poll.fromJson(json)).toList();
-    } else {
+List<Poll> _polls = [];
+
+  List<Poll> get polls => _polls;
+
+  Future<void> fetchPolls() async {
+    try {
+      final response = await http.get(
+        Uri.parse(ApiConstants.api),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['data'];
+        _polls = data.map((json) => Poll.fromJson(json)).toList();
+        notifyListeners(); 
+      } else {
+        throw Exception('Failed to load polls');
+      }
+    } catch (error) {
+      print('Error fetching polls: $error');
       throw Exception('Failed to load polls');
     }
   }
