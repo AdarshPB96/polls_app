@@ -76,7 +76,6 @@ class DesignedContainerTile extends StatelessWidget {
   }
 }
 
-
 class OptionContainStack extends StatefulWidget {
   final String text;
 
@@ -104,7 +103,7 @@ class OptionContainStackState extends State<OptionContainStack> {
         children: [
           Container(
             height: _expanded ? 180 : 80,
-            width: 160,
+            width: 150,
             decoration: BoxDecoration(
               color: Color.fromRGBO(236, 191, 4, 0.33),
               borderRadius: BorderRadius.circular(20),

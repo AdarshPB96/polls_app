@@ -12,7 +12,7 @@ class AllPollScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final provider = Provider.of<MainProvider>(context, listen: false);
+    final provider = Provider.of<MainProvider>(context);
     return Scaffold(
       appBar: GlobalVariables.appBar('All Polls'),
       body: Padding(
@@ -39,6 +39,7 @@ class AllPollScreen extends StatelessWidget {
                           GlobalVariables.height20,
                           DesignedContainerTile(
                             changeBorderColor: true,
+                            width: size.width * 0.94,
                             widget: Padding(
                               padding: const EdgeInsets.all(9.0),
                               child: Column(
@@ -217,4 +218,3 @@ class AllPollScreen extends StatelessWidget {
     );
   }
 }
-

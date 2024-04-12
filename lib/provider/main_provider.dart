@@ -24,7 +24,15 @@ class MainProvider with ChangeNotifier {
   final TextEditingController options4Controller = TextEditingController();
 
   Future<void> createPoll(BuildContext context) async {
-    // Prepare the poll data
+     if (topicController.text.isEmpty ||
+      statementController.text.isEmpty ||
+      options1Controller.text.isEmpty ||
+      options2Controller.text.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Please fill in all fields, including at least two options')),
+    );
+    return;
+  }
     Map<String, dynamic> pollData = {
       "topic": topicController.text,
       "statement": statementController.text,
@@ -40,7 +48,7 @@ class MainProvider with ChangeNotifier {
 
     try {
       final response = await http.post(
-       Uri.parse(ApiConstants.api),
+        Uri.parse(ApiConstants.api),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -54,7 +62,7 @@ class MainProvider with ChangeNotifier {
         options2Controller.clear();
         options3Controller.clear();
         options4Controller.clear();
-
+        notifyListeners();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Poll created successfully!')),
         );
@@ -72,14 +80,15 @@ class MainProvider with ChangeNotifier {
   }
 
   // 2. Fetch Polls from API
-Future<List<Poll>> fetchPolls() async {
-  final response = await http.get( Uri.parse(ApiConstants.api),);
-  if (response.statusCode == 200) {
-    final List<dynamic> data = jsonDecode(response.body)['data'];
-    return data.map((json) => Poll.fromJson(json)).toList();
-  } else {
-    throw Exception('Failed to load polls');
+  Future<List<Poll>> fetchPolls() async {
+    final response = await http.get(
+      Uri.parse(ApiConstants.api),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body)['data'];
+      return data.map((json) => Poll.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load polls');
+    }
   }
-}
-
 }
